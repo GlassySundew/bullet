@@ -70,6 +70,14 @@ class Body {
 		inst.setRollingFriction(f);
 	}
 
+	public function applyImpulse( impulse : Point, relativePos : Point) {
+		var imp = new Native.Vector3(impulse.x, impulse.y, impulse.z);
+		var impRelPos = new Native.Vector3(relativePos.x, relativePos.y, relativePos.z);
+		inst.applyImpulse(imp, impRelPos);
+		imp.delete();
+		impRelPos.delete();
+	}
+
 	public function addAxis( length = 1. ) {
 		if( object == null ) throw "Missing object";
 		var g = new h3d.scene.Graphics(object);
