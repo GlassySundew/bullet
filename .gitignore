@@ -8,3 +8,12 @@ x64
 /src/bullet.cpp
 *.opendb
 *.user
+
+build
+CMakeFiles
+.DS_Store
+*.dylib
+*.cmake
+*.hdll
+install_manifest.txt
+CMakeCache.txt

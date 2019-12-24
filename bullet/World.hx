@@ -1,5 +1,17 @@
 package bullet;
 
+import hxd.impl.UInt16;
+
+class CollisionFilterGroups {
+	public static final DefaultFilter : UInt16 = 1;
+	public static final StaticFilter : UInt16 = 2;
+	public static final KinematicFilter : UInt16 = 4;
+	public static final DebrisFilter : UInt16 = 8;
+	public static final SensorTrigger : UInt16 = 16;
+	public static final CharacterFilter : UInt16 = 32;
+	public static final AllFilter : UInt16 = -1;
+}
+
 class World {
 
 	var config : Native.DefaultCollisionConfiguration;
@@ -22,6 +34,21 @@ class World {
 		inst = new Native.DiscreteDynamicsWorld(dispatch, broad, solver, config);
 	}
 
+	var fromPoint = new Native.Vector3();
+	var toPoint = new Native.Vector3();
+	public function rayTest(from : h3d.col.Point, to : h3d.col.Point, mask : UInt16 = -1) {
+		fromPoint.setValue(from.x, from.y, from.z);
+		toPoint.setValue(to.x, to.y, to.z);
+		var res = new Native.ClosestRayResultCallback(fromPoint, toPoint);
+		res.m_collisionFilterMask = mask;
+		inst.rayTest(fromPoint, toPoint, res);
+		to.set(res.m_hitPointWorld.x(), res.m_hitPointWorld.y(), res.m_hitPointWorld.z());
+		var hit = res.hasHit();
+		res.delete();
+
+		return hit;
+	}
+
 	public function setGravity( x : Float, y : Float, z : Float ) {
 		inst.setGravity(new Native.Vector3(x, y, z));
 	}
@@ -40,11 +67,11 @@ class World {
 		pcache.cleanProxyFromPairs(@:privateAccess b.inst.getBroadphaseHandle(),dispatch);
 	}
 
-	function addRigidBody( b : Body ) {
+	function addRigidBody( b : Body, group : UInt16 = -1, mask : UInt16 = -1 ) {
 		if( b.world != null ) throw "Body already in world";
 		bodies.push(b);
 		@:privateAccess b.world = this;
-		inst.addRigidBody(@:privateAccess b.inst,1,1);
+		inst.addRigidBody(@:privateAccess b.inst, group, mask);
 		if( b.object != null && parent != null && b.object.parent == null ) parent.addChild(b.object);
 	}
 

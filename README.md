@@ -6,15 +6,25 @@ Supports both HashLink and JS output thanks to [WebIDL](https://github.com/ncann
 
 ## Compilation
 
-Download the Bullet sources and put them in hashlink/src/bullet directory.
-Then run `make gen_hl`
-Then open an compile `bullet.sln`
+* Make sure you have hashlink installed in two directories above the current one:
 
-Requires having hashlink one level upper than bullet directory, such as:
-
-```
+```bash
 /hashlink
 /libs
-   /bullet
+   /bullet <- this should contain this repository
 ```
 
+* Download the Bullet sources and extract them in `src/bullet` directory.
+* Run `haxe bullet.hl.hxml`
+* Windows:
+  * Open and compile `bullet.sln`
+  * Place `bullet.hdll` where you have your other `.hdll`s
+* MacOS
+  * Currently compiling only works with `GCC`
+  * Install `cmake`: `brew install cmake`
+  * Install `gcc`:  `brew install gcc`
+  * Run the following command, making sure the paths to `gcc` and `g++` are correct
+    * `cmake -DCMAKE_C_COMPILER=/usr/local/bin/gcc-9 -DCMAKE_CXX_COMPILER=/usr/local/bin/g++-9 . -G"Unix Makefiles"`
+  * Build: `make`
+  * If compilation was successful, install the `.hdll`
+    * `make install``

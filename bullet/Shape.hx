@@ -56,7 +56,30 @@ class Shape {
 	}
 
 	public static function createCapsule( axis : Axis, radius : Float, length : Float ) : Shape {
-		throw "TODO";
+		return new Shape(switch( axis ) {
+		case X:
+			new Native.CapsuleShapeX(radius, length);
+		case Y:
+			new Native.CapsuleShape(radius, length);
+		case Z:
+			new Native.CapsuleShapeZ(radius, length);
+		}, function() {
+			var cy = new h3d.prim.Cylinder( hxd.Math.imax(Math.ceil(radius*Math.PI*2 * 10), 6), radius, length, true);
+			cy.addUVs();
+			//cy.addTangents();
+			switch( axis ) {
+			case Z:
+			case X:
+				var m = new h3d.Matrix();
+				m.initRotation(0,Math.PI/2,0);
+				cy.transform(m);
+			case Y:
+				var m = new h3d.Matrix();
+				m.initRotation(Math.PI/2,0,0);
+				cy.transform(m);
+			}
+			return cy;
+		});
 	}
 
 	public static function createCylinder( axis : Axis, ray : Float, height : Float ) : Shape {
