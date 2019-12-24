@@ -14,7 +14,7 @@ Supports both HashLink and JS output thanks to [WebIDL](https://github.com/ncann
    /bullet <- this should contain this repository
 ```
 
-* Download the Bullet sources and extract them into the `src/bullet` directory.
+* Download the [Bullet sources](https://github.com/bulletphysics/bullet3/releases/tag/2.89) and extract them into the `src/bullet` directory.
 
 ### HL Target
 
