@@ -36,7 +36,8 @@ class World {
 
 	var fromPoint = new Native.Vector3();
 	var toPoint = new Native.Vector3();
-	public function rayTest(from : h3d.col.Point, to : h3d.col.Point, mask : UInt16 = -1) {
+	// Returns a body if the ray hits something. the to param will be set to where it was hit
+	public function rayTest(from : h3d.col.Point, to : h3d.col.Point, mask : UInt16 = -1) : Body {
 		fromPoint.setValue(from.x, from.y, from.z);
 		toPoint.setValue(to.x, to.y, to.z);
 		var res = new Native.ClosestRayResultCallback(fromPoint, toPoint);
@@ -44,9 +45,18 @@ class World {
 		inst.rayTest(fromPoint, toPoint, res);
 		to.set(res.m_hitPointWorld.x(), res.m_hitPointWorld.y(), res.m_hitPointWorld.z());
 		var hit = res.hasHit();
+		var bod : Native.RigidBody = cast res.m_collisionObject;
+
+
+		if (hit) {
+			var hitId = res.m_collisionObject.getUserIndex();
+			res.delete();
+			return getRigidBodyById(hitId);
+		} 
+
 		res.delete();
 
-		return hit;
+		return null;
 	}
 
 	public function setGravity( x : Float, y : Float, z : Float ) {
@@ -73,6 +83,16 @@ class World {
 		@:privateAccess b.world = this;
 		inst.addRigidBody(@:privateAccess b.inst, group, mask);
 		if( b.object != null && parent != null && b.object.parent == null ) parent.addChild(b.object);
+	}
+
+	public function getRigidBodyById(id : Body.BodyId) : Body {
+		for (b in bodies) {
+			if (b.id == id) {
+				return b;
+			}
+		}
+
+		return null;
 	}
 
 	function removeRigidBody( b : Body ) {

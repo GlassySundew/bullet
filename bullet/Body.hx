@@ -2,11 +2,14 @@ package bullet;
 
 import hxd.impl.UInt16;
 
+typedef BodyId = Int;
+
 class Body {
 
 	static inline var ACTIVE_TAG = 1;
 	static inline var DISABLE_DEACTIVATION = 4;
 	static inline var DISABLE_SIMULATION = 5;
+	static var _NEXT_ID = 1;
 
 	var state : Native.MotionState;
 	var inst : Native.RigidBody;
@@ -16,6 +19,7 @@ class Body {
 	var _q = new h3d.Quat();
 	var _tmp = new Array<Float>();
 
+	public var id (default, null) : BodyId;
 	public var world(default,null) : World;
 
 	public var shape(default,null) : Shape;
@@ -28,10 +32,13 @@ class Body {
 	public var alwaysActive(default,set) = false;
 
 	public function new( shape : Shape, mass : Float, ?world : World, group : UInt16 = -1, mask : UInt16 = -1) {
+		id = _NEXT_ID++;
+
 		var inertia = new Native.Vector3(shape.inertia.x * mass, shape.inertia.y * mass, shape.inertia.x * mass);
 		state = new Native.DefaultMotionState();
 		var inf = new Native.RigidBodyConstructionInfo(mass, state, @:privateAccess shape.getInstance(), inertia);
 		inst = new Native.RigidBody(inf);
+		inst.setUserIndex(id);
 		inertia.delete();
 		inf.delete();
 		this.shape = shape;
@@ -74,6 +81,7 @@ class Body {
 		var imp = new Native.Vector3(impulse.x, impulse.y, impulse.z);
 		var impRelPos = new Native.Vector3(relativePos.x, relativePos.y, relativePos.z);
 		inst.applyImpulse(imp, impRelPos);
+		inst.activate();
 		imp.delete();
 		impRelPos.delete();
 	}
