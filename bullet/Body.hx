@@ -5,7 +5,6 @@ import hxd.impl.UInt16;
 typedef BodyId = Int;
 
 class Body {
-
 	static inline var ACTIVE_TAG = 1;
 	static inline var DISABLE_DEACTIVATION = 4;
 	static inline var DISABLE_SIMULATION = 5;
@@ -57,6 +56,22 @@ class Body {
 		object = o;
 		if( object != null && object.parent == null && world != null && world.parent != null ) world.parent.addChild(object);
 		return o;
+	}
+
+	public function setUserIndex(index : Int) {
+		return inst.setUserIndex(index);
+	}
+
+	public function setUserIndex2(index : Int) {
+		return inst.setUserIndex2(index);
+	}
+
+	public function getUserIndex() : Int {
+		return inst.getUserIndex();
+	}
+
+	public function getUserIndex2() : Int {
+		return inst.getUserIndex2();
 	}
 
 	public function addTo( world : World, group : UInt16 = -1, mask : UInt16 = -1) {
