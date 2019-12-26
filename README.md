@@ -39,7 +39,7 @@ specific instructions:
 
 #### Linux
 
-* TODO
+* This should work the same way as MacOS, except install GCC and CMake using your preferred package manager.
 
 ### JS Target
 
