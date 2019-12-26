@@ -6,15 +6,20 @@ Supports both HashLink and JS output thanks to [WebIDL](https://github.com/ncann
 
 ## Compilation
 
+* Download the [Bullet Sources](https://github.com/bulletphysics/bullet3/releases/tag/2.89) and extract them into the `src/bullet` directory.
 * Make sure you have hashlink installed in two directories above the current one:
 
 ```bash
-/hashlink
+/hashlink <- hashlink git repo
 /libs
-   /bullet <- this should contain this repository
+   /bullet <- the current git repository
+      /src
+         /bullet <- should contain the extracted Bullet sources
+            /src
+               /btBulletCollisionAll.cpp 
+               /... etc.
 ```
 
-* Download the [Bullet sources](https://github.com/bulletphysics/bullet3/releases/tag/2.89) and extract them into the `src/bullet` directory.
 
 ### HL Target
 
