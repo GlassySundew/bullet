@@ -18,7 +18,7 @@ Supports both HashLink and JS output thanks to [WebIDL](https://github.com/ncann
 
 ### HL Target
 
-First run `haxe bullet.hl.hxml`, then check the platform
+* First run `haxe bullet.hl.hxml`, then check the platform
 specific instructions:
 
 #### Windows
