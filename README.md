@@ -1,6 +1,6 @@
 # Bullet
 
-[Bullet Physics](https://github.com/bulletphysics) wrapper for Heaps
+[Bullet Physics](https://github.com/bulletphysics) wrapper for [Heaps](https://github.com/HeapsIO/heaps)
 
 Supports both HashLink and JS output thanks to [WebIDL](https://github.com/ncannasse/webidl)
 
