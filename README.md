@@ -16,10 +16,9 @@ Supports both HashLink and JS output thanks to [WebIDL](https://github.com/ncann
       /src
          /bullet <- should contain the extracted Bullet sources
             /src
-               /btBulletCollisionAll.cpp 
+               /btBulletCollisionAll.cpp
                /... etc.
 ```
-
 
 ### HL Target
 

@@ -29,6 +29,8 @@ class Body {
 	public var rotation(get,never) : h3d.Quat;
 	public var object(default,set) : h3d.scene.Object;
 	public var alwaysActive(default,set) = false;
+	public var friction(get, set) : Float;
+	public var restitution(get, set) : Float;
 
 	public function new( shape : Shape, mass : Float, ?world : World, group : UInt16 = -1, mask : UInt16 = -1) {
 		id = _NEXT_ID++;
@@ -49,6 +51,14 @@ class Body {
 	function set_alwaysActive(b) {
 		inst.setActivationState(b ? DISABLE_DEACTIVATION : ACTIVE_TAG);
 		return alwaysActive = b;
+	}
+
+	function get_restitution() : Float {
+		return inst.getRestitution();
+	}
+	function set_restitution( restitution : Float ) : Float {
+		inst.setRestitution(restitution);
+		return restitution;
 	}
 
 	function set_object(o) {
@@ -84,8 +94,13 @@ class Body {
 		@:privateAccess world.removeRigidBody(this);
 	}
 
-	public function setFriction( f ) {
+	function set_friction( f : Float) : Float {
 		inst.setFriction(f);
+		return f;
+	}
+	
+	function get_friction() : Float {
+		return inst.getFriction();
 	}
 
 	public function setRollingFriction( f ) {
