@@ -470,6 +470,18 @@
       <Filter>Bullet\softbody</Filter>
     </ClCompile>
     <ClCompile Include="src\bullet.cpp" />
+    <ClCompile Include="src\bullet\src\BulletCollision\CollisionShapes\btSdfCollisionShape.cpp">
+      <Filter>Bullet\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bullet\src\BulletCollision\CollisionShapes\btMiniSDF.cpp">
+      <Filter>Bullet\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bullet\src\BulletDynamics\ConstraintSolver\btBatchedConstraints.cpp">
+      <Filter>Bullet\dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bullet\src\BulletDynamics\ConstraintSolver\btSequentialImpulseConstraintSolverMt.cpp">
+      <Filter>Bullet\dynamics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Bullet">

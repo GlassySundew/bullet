@@ -9,21 +9,23 @@ function(set_as_hdll target)
     )
 endfunction()
 
+
+
+include_directories(../../hashlink/src)
+include_directories(src/bullet/src)
+link_directories(src/bullet/bin)
+
+add_definitions(-DBULLET_EXPORTS)
+
+
+add_definitions(-fpermissive)
+
+link_directories(/usr/local/lib)
 include(GNUInstallDirs)
 
 set(HDLL_DESTINATION
     ${CMAKE_INSTALL_LIBDIR}
 )
-
-include_directories(../../hashlink/src)
-include_directories(src/bullet/src)
-
-add_definitions(-DBULLET_EXPORTS)
-add_definitions(-fpermissive)
-
-add_definitions(-Wno-error=incompatible-pointer-types)
-
-link_directories(/usr/local/lib)
 
 set(INCLUDES_BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(BULLET_SRC_DIR ${INCLUDES_BASE_DIR}/bullet/src)
@@ -204,11 +206,13 @@ target_link_libraries(bullet.hdll
     hl
 )
 set_target_properties(bullet.hdll PROPERTIES
-         LIBRARY_OUTPUT_DIRECTORY ../../hashlink)
+        LIBRARY_OUTPUT_DIRECTORY ../../hashlink)
 
 
+if (!WIN32)
 install(
     TARGETS
         bullet.hdll
     DESTINATION ${HDLL_DESTINATION}
 )
+endif()
