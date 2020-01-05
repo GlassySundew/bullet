@@ -8,6 +8,7 @@ x64
 /src/bullet.cpp
 *.opendb
 *.user
+*.swp
 
 build
 CMakeFiles

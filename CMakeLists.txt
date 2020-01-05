@@ -203,17 +203,21 @@ target_include_directories(bullet.hdll
 
 
 set_as_hdll(bullet)
+if (WIN32)
 target_link_libraries(bullet.hdll
     libhl
 )
+else()
+target_link_libraries(bullet.hdll
+    hl
+)
+endif()
+
 set_target_properties(bullet.hdll PROPERTIES
         LIBRARY_OUTPUT_DIRECTORY ../../hashlink)
 
-
-if (!WIN32)
 install(
     TARGETS
         bullet.hdll
     DESTINATION ${HDLL_DESTINATION}
 )
-endif()
