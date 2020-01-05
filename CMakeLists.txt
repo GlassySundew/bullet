@@ -1,4 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
+project(bullet)
+
+set(HASHLINK_LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../hashlink/$(Configuration) CACHE PATH "Path to where hashlink libraries are")
 
 function(set_as_hdll target)
     set_target_properties(${target}.hdll
@@ -9,16 +12,14 @@ function(set_as_hdll target)
     )
 endfunction()
 
-
-
-include_directories(../../hashlink/src)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../hashlink/src)
 include_directories(src/bullet/src)
 link_directories(src/bullet/bin)
 
 add_definitions(-DBULLET_EXPORTS)
-
-
 add_definitions(-fpermissive)
+
+link_directories(${HASHLINK_LIB_PATH})
 
 link_directories(/usr/local/lib)
 include(GNUInstallDirs)
@@ -203,7 +204,7 @@ target_include_directories(bullet.hdll
 
 set_as_hdll(bullet)
 target_link_libraries(bullet.hdll
-    hl
+    libhl
 )
 set_target_properties(bullet.hdll PROPERTIES
         LIBRARY_OUTPUT_DIRECTORY ../../hashlink)
