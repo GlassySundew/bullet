@@ -5,9 +5,12 @@ x64
 *.db
 *.hl
 /src/bullet
+/src/src
 /src/bullet.cpp
 *.opendb
 *.user
+*.tmp
+.vs
 
 build
 CMakeFiles

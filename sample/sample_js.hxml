@@ -2,6 +2,6 @@
 -js sample.js
 -main Main
 -lib heaps
--lib hxbullet
+-lib bullet
 -D old-error-format
 -dce full
