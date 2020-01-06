@@ -229,7 +229,14 @@ class Body {
 		p.delete();
 	}
 
-	@:allow(bullet) static var zero = new Native.Vector3(0,0,0);
+	@:allow(bullet) static var zero(get, null) : Native.Vector3;
+	static var _zero : Native.Vector3;
+	static function get_zero() : Native.Vector3 {
+		if (_zero == null) {
+			_zero = new Native.Vector3(0,0,0);
+		}
+		return _zero;
+	}
 
 	/**
 		Updated the linked object position and rotation based on physical simulation

@@ -51,11 +51,24 @@ specific instructions:
 
 * Install [Emscripten](https://emscripten.org/docs/getting_started/downloads.html)
 
+* Make sure the env variable `EMSDK` is set, pointing to the `emsdk` directory.
+
 * Run `haxe bullet_js.hxml`
 
 This should generate the files `bullet.js` and `bullet.wasm`.
 
+Check out the sample html and haxe file on how to load it.
+
 ## Building the Sample
+
+First compile bullet as shown in the compilation section.
+Once that is done it should be possible to build the samples.
+
+(You might have to add the haxelib locally):
+
+```bash
+haxelib dev bullet $(pwd)
+```
 
 When building the JS sample, make sure to
 copy `bullet.js` and `bullet.wasm` into the sample directory.
