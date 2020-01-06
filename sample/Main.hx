@@ -42,8 +42,15 @@ class Main extends hxd.App {
 			bullet.Shape.createSphere(0.5);
 	}
 
-	static function main() {
+	@:expose
+	static function startApp() {
 		new Main();
+	}
+
+	static function main() {
+#if !js
+		startApp();
+#end
 	}
 
 }

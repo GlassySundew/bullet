@@ -5,9 +5,14 @@
 		var bullet = { TOTAL_MEMORY : 256 * 1024 * 1024 };
 	</script>
 	<script type="text/javascript" src="bullet.js"></script>
-	<script>
-		bullet = bullet();
-	</script>
 	<script type="text/javascript" src="sample.js"></script>
+	<script>
+		// Initialize bullet and then start.
+		bullet().then(function(b) {
+			bullet = b;
+			Main.startApp();
+		});
+	</script>
+
 </body>
 </html>

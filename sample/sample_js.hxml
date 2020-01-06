@@ -5,5 +5,3 @@
 -lib bullet
 -D old-error-format
 -dce full
--cmd cp ../bullet.js .
--cmd cp ../bullet.wasm .

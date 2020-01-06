@@ -22,7 +22,7 @@ Supports both HashLink and JS output thanks to [WebIDL](https://github.com/ncann
 
 ### HL Target
 
-* First run `haxe bullet.hl.hxml`, then check the platform
+* First run `haxe bullet_hl.hxml`, then check the platform
 specific instructions:
 
 #### Windows
@@ -47,9 +47,15 @@ specific instructions:
 
 ### JS Target
 
-* Windows
-  * TODO
-* MacOS
-  * TODO
-* Linux
-  * TODO
+* Install the webidl haxe package: `haxelib git webidl https://github.com/ncannasse/webidl.git`.
+
+* Install [Emscripten](https://emscripten.org/docs/getting_started/downloads.html)
+
+* Run `haxe bullet_js.hxml`
+
+This should generate the files `bullet.js` and `bullet.wasm`.
+
+## Building the Sample
+
+When building the JS sample, make sure to
+copy `bullet.js` and `bullet.wasm` into the sample directory.
