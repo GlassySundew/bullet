@@ -43,7 +43,8 @@ class Generator {
 	public static function generateJs() {
 		// ammo.js params
 		var debug = false;
-		var defines = debug ? [] : ["NO_EXIT_RUNTIME=1", "NO_FILESYSTEM=1", "AGGRESSIVE_VARIABLE_ELIMINATION=1", "NO_DYNAMIC_EXECUTION=1"];
+		var totalMemory = 256 * 1024 * 1024;
+		var defines = debug ? [] : ["NO_EXIT_RUNTIME=1", "NO_FILESYSTEM=1", "AGGRESSIVE_VARIABLE_ELIMINATION=1", "NO_DYNAMIC_EXECUTION=1", "TOTAL_MEMORY=" + totalMemory];
 		var params = ["-O"+(debug?0:3), "--llvm-lto", "1", "-I", "src/bullet/src"];
 		for( d in defines ) {
 			params.push("-s");

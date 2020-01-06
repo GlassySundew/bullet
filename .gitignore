@@ -11,6 +11,7 @@ x64
 *.user
 *.tmp
 .vs
+*.swp
 
 build
 CMakeFiles
@@ -21,3 +22,9 @@ CMakeFiles
 install_manifest.txt
 CMakeCache.txt
 Makefile
+
+bullet.js
+bullet.wasm
+sample/bullet.js
+sample/bullet.wasm
+sample/sample.js
