@@ -16,11 +16,6 @@ Supports both HashLink and JS output thanks to [WebIDL](https://github.com/ncann
 /hashlink <- hashlink git repo
 /libs
    /bullet <- the current git repository
-      /src
-         /bullet <- should contain the extracted Bullet sources
-            /src
-               /btBulletCollisionAll.cpp
-               /... etc.
 ```
 
 ### HL Target
