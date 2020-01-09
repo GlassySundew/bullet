@@ -2,7 +2,7 @@ package bullet;
 
 class Constraint {
 
-	var cst : Native.TypedConstraint;
+	var cst : Bullet.TypedConstraint;
 	public var world(default,null) : World;
 	public var disableCollisionsBetweenLinkedBodies(default, set) : Bool = false;
 

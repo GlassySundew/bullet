@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
+project(bullet)
 
 function(set_as_hdll target)
     set_target_properties(${target}.hdll
@@ -9,28 +10,25 @@ function(set_as_hdll target)
     )
 endfunction()
 
-
-
-include_directories(../../hashlink/src)
-include_directories(src/bullet/src)
-link_directories(src/bullet/bin)
-
 add_definitions(-DBULLET_EXPORTS)
-
-
 add_definitions(-fpermissive)
 
-link_directories(/usr/local/lib)
 include(GNUInstallDirs)
+set(HDLL_DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
-set(HDLL_DESTINATION
-    ${CMAKE_INSTALL_LIBDIR}
-)
+set(BULLET_DIR lib/bullet3)
+set(HASHLINK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../hashlink)
 
-set(INCLUDES_BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
-set(BULLET_SRC_DIR ${INCLUDES_BASE_DIR}/bullet/src)
+include_directories(${BULLET_SRC_DIR})
+include_directories(${HASHLINK_DIR}/src)
+link_directories(${BULLET_DIR}/bin)
 
-add_library(bullet.hdll SHARED
+if (!WIN32)
+link_directories(/usr/local/lib)
+endif()
+
+set(BULLET_SRC_DIR ${BULLET_DIR}/src)
+set(BULLET_SOURCES
     ${BULLET_SRC_DIR}/Bullet3Common/b3AlignedAllocator.cpp
     ${BULLET_SRC_DIR}/Bullet3Common/b3Logging.cpp
     ${BULLET_SRC_DIR}/Bullet3Common/b3Vector3.cpp
@@ -191,28 +189,46 @@ add_library(bullet.hdll SHARED
     ${BULLET_SRC_DIR}/LinearMath/btSerializer64.cpp
     ${BULLET_SRC_DIR}/LinearMath/btThreads.cpp
     ${BULLET_SRC_DIR}/LinearMath/btVector3.cpp
+)
+
+file(WRITE ${CMAKE_CURRENT_SOURCE_DIR}/sourcelist.txt "")
+foreach(source IN ITEMS ${BULLET_SOURCES})
+file(APPEND ${CMAKE_CURRENT_SOURCE_DIR}/sourcelist.txt "${source}\n")
+endforeach()
+file(APPEND ${CMAKE_CURRENT_SOURCE_DIR}/sourcelist.txt "src/bullet.cpp\n")
+
+add_library(bullet.hdll SHARED
+    ${BULLET_SOURCES}
     src/bullet.cpp
 )
 
+if (WIN32)
+target_link_directories(bullet.hdll PRIVATE "${HASHLINK_DIR}/$(Platform)")
+target_link_libraries(bullet.hdll
+    libhl
+)
+else()
+target_link_libraries(bullet.hdll
+    hl
+)
+endif()
 
 target_include_directories(bullet.hdll
     PRIVATE
     ${BULLET_SRC_DIR}
 )
 
-
 set_as_hdll(bullet)
-target_link_libraries(bullet.hdll
-    hl
-)
+
 set_target_properties(bullet.hdll PROPERTIES
-        LIBRARY_OUTPUT_DIRECTORY ../../hashlink)
+        LIBRARY_OUTPUT_DIRECTORY ${HASHLINK_DIR})
 
+if(WIN32)
+    set(HDLL_DESTINATION "C:/GameDev/hl/")
+endif()
 
-if (!WIN32)
 install(
     TARGETS
         bullet.hdll
     DESTINATION ${HDLL_DESTINATION}
 )
-endif()

@@ -10,8 +10,8 @@ class Body {
 	static inline var DISABLE_SIMULATION = 5;
 	static var _NEXT_ID = 1;
 
-	var state : Native.MotionState;
-	var inst : Native.RigidBody;
+	var state : Bullet.MotionState;
+	var inst : Bullet.RigidBody;
 	var _pos = new Point();
 	var _vel = new Point();
 	var _avel = new Point();
@@ -35,10 +35,10 @@ class Body {
 	public function new( shape : Shape, mass : Float, ?world : World, group : UInt16 = -1, mask : UInt16 = -1) {
 		id = _NEXT_ID++;
 
-		var inertia = new Native.Vector3(shape.inertia.x * mass, shape.inertia.y * mass, shape.inertia.x * mass);
-		state = new Native.DefaultMotionState();
-		var inf = new Native.RigidBodyConstructionInfo(mass, state, @:privateAccess shape.getInstance(), inertia);
-		inst = new Native.RigidBody(inf);
+		var inertia = new Bullet.Vector3(shape.inertia.x * mass, shape.inertia.y * mass, shape.inertia.x * mass);
+		state = new Bullet.DefaultMotionState();
+		var inf = new Bullet.RigidBodyConstructionInfo(mass, state, @:privateAccess shape.getInstance(), inertia);
+		inst = new Bullet.RigidBody(inf);
 		inst.setUserIndex(id);
 		inertia.delete();
 		inf.delete();
@@ -108,8 +108,8 @@ class Body {
 	}
 
 	public function applyImpulse( impulse : Point, relativePos : Point) {
-		var imp = new Native.Vector3(impulse.x, impulse.y, impulse.z);
-		var impRelPos = new Native.Vector3(relativePos.x, relativePos.y, relativePos.z);
+		var imp = new Bullet.Vector3(impulse.x, impulse.y, impulse.z);
+		var impRelPos = new Bullet.Vector3(relativePos.x, relativePos.y, relativePos.z);
 		inst.applyImpulse(imp, impRelPos);
 		inst.activate();
 		imp.delete();
@@ -132,11 +132,11 @@ class Body {
 
 	public function setTransform( p : Point, ?q : h3d.Quat ) {
 		var t = inst.getCenterOfMassTransform();
-		var v = new Native.Vector3(p.x, p.y, p.z);
+		var v = new Bullet.Vector3(p.x, p.y, p.z);
 		t.setOrigin(v);
 		v.delete();
 		if( q != null ) {
-			var qv = new Native.Quaternion(q.x, q.y, q.z, q.w);
+			var qv = new Bullet.Quaternion(q.x, q.y, q.z, q.w);
 			t.setRotation(qv);
 			qv.delete();
 		}
@@ -183,7 +183,7 @@ class Body {
 	function get_rotation() {
 		var t = inst.getCenterOfMassTransform();
 		var q = t.getRotation();
-		var qw : Native.QuadWord = q;
+		var qw : Bullet.QuadWord = q;
 		_q.set(qw.x(), qw.y(), qw.z(), qw.w());
 		q.delete();
 		return _q;
@@ -197,7 +197,7 @@ class Body {
 
 	function set_velocity(v) {
 		if( v != _vel ) _vel.load(v);
-		var p = new Native.Vector3(v.x, v.y, v.z);
+		var p = new Bullet.Vector3(v.x, v.y, v.z);
 		inst.setLinearVelocity(p);
 		p.delete();
 		return v;
@@ -211,29 +211,29 @@ class Body {
 
 	function set_angularVelocity(v) {
 		if( v != _avel ) _avel.load(v);
-		var p = new Native.Vector3(v.x, v.y, v.z);
+		var p = new Bullet.Vector3(v.x, v.y, v.z);
 		inst.setAngularVelocity(p);
 		p.delete();
 		return v;
 	}
 
 	public function setAngularFactor(x, y, z) {
-		var p = new Native.Vector3(x, y, z);
+		var p = new Bullet.Vector3(x, y, z);
 		inst.setAngularFactor(p);
 		p.delete();
 	}
 
 	public function setVelocity(x, y, z) {
-		var p = new Native.Vector3(x, y, z);
+		var p = new Bullet.Vector3(x, y, z);
 		inst.setLinearVelocity(p);
 		p.delete();
 	}
 
-	@:allow(bullet) static var zero(get, null) : Native.Vector3;
-	static var _zero : Native.Vector3;
-	static function get_zero() : Native.Vector3 {
+	@:allow(bullet) static var zero(get, null) : Bullet.Vector3;
+	static var _zero : Bullet.Vector3;
+	static function get_zero() : Bullet.Vector3 {
 		if (_zero == null) {
-			_zero = new Native.Vector3(0,0,0);
+			_zero = new Bullet.Vector3(0,0,0);
 		}
 		return _zero;
 	}

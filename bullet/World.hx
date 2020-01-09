@@ -14,38 +14,38 @@ class CollisionFilterGroups {
 
 class World {
 
-	var config : Native.DefaultCollisionConfiguration;
-	var dispatch : Native.Dispatcher;
-	var broad : Native.BroadphaseInterface;
-	var pcache : Native.OverlappingPairCache;
-	var solver : Native.ConstraintSolver;
-	var inst : Native.DiscreteDynamicsWorld;
+	var config : Bullet.DefaultCollisionConfiguration;
+	var dispatch : Bullet.Dispatcher;
+	var broad : Bullet.BroadphaseInterface;
+	var pcache : Bullet.OverlappingPairCache;
+	var solver : Bullet.ConstraintSolver;
+	var inst : Bullet.DiscreteDynamicsWorld;
 	var bodies : Array<Body> = [];
 	var constraints : Array<Constraint> = [];
 	public var parent : h3d.scene.Object;
 
 	public function new( ?parent ) {
 		this.parent = parent;
-		config = new Native.DefaultCollisionConfiguration();
-		dispatch = new Native.CollisionDispatcher(config);
-		broad = new Native.DbvtBroadphase();
+		config = new Bullet.DefaultCollisionConfiguration();
+		dispatch = new Bullet.CollisionDispatcher(config);
+		broad = new Bullet.DbvtBroadphase();
 		pcache = broad.getOverlappingPairCache();
-		solver = new Native.SequentialImpulseConstraintSolver();
-		inst = new Native.DiscreteDynamicsWorld(dispatch, broad, solver, config);
+		solver = new Bullet.SequentialImpulseConstraintSolver();
+		inst = new Bullet.DiscreteDynamicsWorld(dispatch, broad, solver, config);
 	}
 
-	var fromPoint = new Native.Vector3();
-	var toPoint = new Native.Vector3();
+	var fromPoint = new Bullet.Vector3();
+	var toPoint = new Bullet.Vector3();
 	// Returns a body if the ray hits something. the to param will be set to where it was hit
 	public function rayTest(from : h3d.col.Point, to : h3d.col.Point, mask : UInt16 = -1) : Body {
 		fromPoint.setValue(from.x, from.y, from.z);
 		toPoint.setValue(to.x, to.y, to.z);
-		var res = new Native.ClosestRayResultCallback(fromPoint, toPoint);
+		var res = new Bullet.ClosestRayResultCallback(fromPoint, toPoint);
 		res.m_collisionFilterMask = mask;
 		inst.rayTest(fromPoint, toPoint, res);
 		to.set(res.m_hitPointWorld.x(), res.m_hitPointWorld.y(), res.m_hitPointWorld.z());
 		var hit = res.hasHit();
-		var bod : Native.RigidBody = cast res.m_collisionObject;
+		var bod : Bullet.RigidBody = cast res.m_collisionObject;
 
 
 		if (hit) {
@@ -60,7 +60,7 @@ class World {
 	}
 
 	public function setGravity( x : Float, y : Float, z : Float ) {
-		inst.setGravity(new Native.Vector3(x, y, z));
+		inst.setGravity(new Bullet.Vector3(x, y, z));
 	}
 
 	public function stepSimulation( time : Float, iterations : Int ) {

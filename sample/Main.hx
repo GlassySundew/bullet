@@ -1,6 +1,6 @@
+import bullet.Bullet.Init as BulletInit;
 
 class Main extends hxd.App {
-
 	var world : bullet.World;
 
 	override function init() {
@@ -42,15 +42,11 @@ class Main extends hxd.App {
 			bullet.Shape.createSphere(0.5);
 	}
 
-	@:expose
 	static function startApp() {
 		new Main();
 	}
 
 	static function main() {
-#if !js
-		startApp();
-#end
+		BulletInit.init(startApp);
 	}
-
 }

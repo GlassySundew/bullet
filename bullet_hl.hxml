@@ -1,2 +1,2 @@
 -lib webidl
---macro "bullet.Generator.generateCpp()"
+--macro "bullet.Bullet.buildLibCpp()"

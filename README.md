@@ -6,7 +6,10 @@ Supports both HashLink and JS output thanks to [WebIDL](https://github.com/ncann
 
 ## Compilation
 
-* Download the [Bullet Sources](https://github.com/bulletphysics/bullet3/releases/tag/2.89) and extract them into the `src/bullet` directory.
+* Clone this repository
+
+* Run `git submodule init`
+
 * Make sure you have hashlink installed in two directories above the current one:
 
 ```bash
@@ -27,7 +30,8 @@ specific instructions:
 
 #### Windows
 
-* Open and compile `bullet.sln`
+* Run CMake, and make sure the variable `HASHLINK_DIR` is correct.
+* Compile the created Visual Studio solution.
 * Place `bullet.hdll` where you have your other `.hdll`s
 
 #### MacOS
@@ -64,7 +68,7 @@ Check out the sample html and haxe file on how to load it.
 First compile bullet as shown in the compilation section.
 Once that is done it should be possible to build the samples.
 
-(You might have to add the haxelib locally):
+(You have to add the haxelib locally):
 
 ```bash
 haxelib dev bullet $(pwd)
