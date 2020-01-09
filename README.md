@@ -8,7 +8,12 @@ Supports both HashLink and JS output thanks to [WebIDL](https://github.com/ncann
 
 * Clone this repository
 
-* Run `git submodule init`
+* Run  the following commands, they download the Bullet physics library into the lib dir.
+
+```bash
+git submodule init
+git submodule update
+```
 
 * Make sure you have hashlink installed in two directories above the current one:
 
@@ -46,7 +51,7 @@ specific instructions:
 
 ### JS Target
 
-* Install the webidl haxe package: `haxelib git webidl https://github.com/ncannasse/webidl.git`.
+* Install the webidl haxe package: `haxelib git webidl https://github.com/jefvel/webidl.git`.
 
 * Install [Emscripten](https://emscripten.org/docs/getting_started/downloads.html)
 
@@ -69,5 +74,5 @@ Once that is done it should be possible to build the samples.
 haxelib dev bullet $(pwd)
 ```
 
-When building the JS sample, make sure to
+After building the JS sample, make sure to
 copy `bullet.js` and `bullet.wasm` into the sample directory.
