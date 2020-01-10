@@ -65,6 +65,7 @@ class Body {
 		if( object != null ) object.remove();
 		object = o;
 		if( object != null && object.parent == null && world != null && world.parent != null ) world.parent.addChild(object);
+		object.ignoreParentTransform = true;
 		return o;
 	}
 
@@ -165,7 +166,10 @@ class Body {
 	}
 
 	public function loadPosFromObject() {
-		setTransform(new Point(object.x, object.y, object.z), object.getRotationQuat());
+		object.ignoreParentTransform = false;
+		var pos = object.getAbsPos().getPosition();
+		object.ignoreParentTransform = true;
+		setTransform(new Point(pos.x, pos.y, pos.z), object.getRotationQuat());
 	}
 
 	public function setPosition(x : Float, y : Float, z : Float) {
