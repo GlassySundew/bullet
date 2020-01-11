@@ -21,11 +21,12 @@ set(HASHLINK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../hashlink)
 
 include_directories(${BULLET_SRC_DIR})
 include_directories(${HASHLINK_DIR}/src)
-link_directories(${BULLET_DIR}/bin)
 
-if (!WIN32)
+if (NOT WIN32)
+link_directories(${HASHLINK_DIR})
 link_directories(/usr/local/lib)
 endif()
+
 
 set(BULLET_SRC_DIR ${BULLET_DIR}/src)
 set(BULLET_SOURCES
