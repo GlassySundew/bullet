@@ -37,7 +37,7 @@ class World {
 	var fromPoint = new Bullet.Vector3();
 	var toPoint = new Bullet.Vector3();
 	// Returns a body if the ray hits something. the to param will be set to where it was hit
-	public function rayTest(from : h3d.col.Point, to : h3d.col.Point, mask : UInt16 = -1) : Body {
+	public function rayTest(from : h3d.col.Point, to : h3d.col.Point, mask : UInt16 = -1, ?hitNormal : h3d.col.Point) : Body {
 		fromPoint.setValue(from.x, from.y, from.z);
 		toPoint.setValue(to.x, to.y, to.z);
 		var res = new Bullet.ClosestRayResultCallback(fromPoint, toPoint);
@@ -47,9 +47,14 @@ class World {
 		var hit = res.hasHit();
 		var bod : Bullet.RigidBody = cast res.m_collisionObject;
 
-
 		if (hit) {
 			var hitId = res.m_collisionObject.getUserIndex();
+			if (hitNormal != null) {
+				hitNormal.x = res.m_hitNormalWorld.x();
+				hitNormal.y = res.m_hitNormalWorld.y();
+				hitNormal.z = res.m_hitNormalWorld.z();
+			}
+
 			res.delete();
 			return getRigidBodyById(hitId);
 		} 
