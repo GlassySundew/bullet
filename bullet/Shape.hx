@@ -82,6 +82,12 @@ class Shape {
 		});
 	}
 
+	public function setLocalScaling(x, y, z) {
+		var vec3 = new Bullet.Vector3(x, y, z);
+		inst.setLocalScaling(vec3);
+		vec3.delete();
+	}
+
 	public static function createCylinder( axis : Axis, ray : Float, height : Float ) : Shape {
 		var vec3;
 		var sh = new Shape(switch( axis ) {
