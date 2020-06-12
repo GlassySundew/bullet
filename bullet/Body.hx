@@ -1,5 +1,6 @@
 package bullet;
 
+import h3d.Quat;
 import hxd.impl.UInt16;
 
 typedef BodyId = Int;
@@ -166,10 +167,12 @@ class Body {
 	}
 
 	public function loadPosFromObject() {
+		var ignoreTransform = object.ignoreParentTransform;
 		object.ignoreParentTransform = false;
-		var pos = object.getAbsPos().getPosition();
-		object.ignoreParentTransform = true;
-		setTransform(new Point(pos.x, pos.y, pos.z), object.getRotationQuat());
+		var abs = object.getAbsPos();
+		var pos = abs.getPosition();
+		setTransform(new Point(pos.x, pos.y, pos.z), object.getAbsRotationQuat());
+		object.ignoreParentTransform = ignoreTransform;
 	}
 
 	public function setPosition(x : Float, y : Float, z : Float) {
@@ -224,6 +227,12 @@ class Body {
 	public function setAngularFactor(x, y, z) {
 		var p = new Bullet.Vector3(x, y, z);
 		inst.setAngularFactor(p);
+		p.delete();
+	}
+
+	public function setGravity(x, y, z) {
+		var p = new Bullet.Vector3(x, y, z);
+		inst.setGravity(p);
 		p.delete();
 	}
 
