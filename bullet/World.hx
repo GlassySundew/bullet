@@ -72,6 +72,10 @@ class World {
 		inst.stepSimulation(time, iterations);
 	}
 
+	public function getManifoldCount() {
+		return dispatch.getNumManifolds();
+	}
+
 	public function sync() {
 		for( b in bodies )
 			if( b.object != null )
