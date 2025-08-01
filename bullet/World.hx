@@ -64,6 +64,11 @@ class World {
 		return null;
 	}
 
+	
+	public function setDebugDrawer(debugDraw : Bullet.IDebugDraw) {
+		inst.setDebugDrawer(debugDraw);
+	}
+
 	public function setGravity( x : Float, y : Float, z : Float ) {
 		inst.setGravity(new Bullet.Vector3(x, y, z));
 	}

@@ -1,4 +1,6 @@
+import bullet.Point;
 import bullet.Bullet.Init as BulletInit;
+// import bullet.Native as Bullet;
 
 class Main extends hxd.App {
 	var world : bullet.World;
@@ -13,10 +15,12 @@ class Main extends hxd.App {
 
 		new h3d.scene.fwd.DirLight(new h3d.Vector(1, 2, -4), s3d);
 
-		var shapes = [bullet.Shape.createSphere(0.5), bullet.Shape.createBox(1,1,1)];
+		var shapes :Array<bullet.Shape> = [bullet.Shape.createSphere(0.5), bullet.Shape.createBox(1,1,1)];
 		for( i in 0...100 ) {
 			var id = Std.random(shapes.length);
-			var b = new bullet.Body(shapes[id], 0.5, world);
+			final shape = shapes[id];
+			shape.setLocalScaling(4,4,4);
+			var b = new bullet.Body(shape, 0.5, world);
 			var m = b.initObject();
 			m.x = Math.random() * 10;
 			m.y = Math.random() * 10;

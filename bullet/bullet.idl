@@ -96,6 +96,7 @@ btDefaultMotionState implements btMotionState;
 // Collision
 
 interface btCollisionObject {
+	void btCollisionObject();
 
 	boolean mergesSimulationIslands();
 	[Const,Ref] btVector3 getAnisotropicFriction();
@@ -108,7 +109,7 @@ interface btCollisionObject {
 	boolean isStaticOrKinematicObject();
 	boolean hasContactResponse();
 	void setCollisionShape(btCollisionShape collisionShape);
-	btCollisionShape getCollisionShape();
+	[Const] btCollisionShape getCollisionShape();
 	void setIgnoreCollisionCheck([Const] btCollisionObject co, boolean ignoreCollisionCheck);
 	boolean checkCollideWithOverride([Const] btCollisionObject co);
 	long getActivationState();
@@ -163,10 +164,10 @@ interface btCollisionObject {
 	void setUserPointer(VoidPtr userPointer);
 	void setUserIndex(long index);
 	void setUserIndex2(long index);
-	//long getUpdateRevisionInternal();
-	//void setCustomDebugColor( [Const,Ref] btVector3 colorRGB);
-	//void removeCustomDebugColor();
-	//boolean getCustomDebugColor([Ref] btVector3 colorRGB);
+	long getUpdateRevisionInternal();
+	void setCustomDebugColor( [Const,Ref] btVector3 colorRGB);
+	void removeCustomDebugColor();
+	boolean getCustomDebugColor([Ref] btVector3 colorRGB);
 	boolean checkCollideWith([Const] btCollisionObject co);
 
 };
@@ -181,6 +182,7 @@ interface RayResultCallback {
 	boolean hasHit();
 	attribute short m_collisionFilterGroup;
 	attribute short m_collisionFilterMask;
+	attribute float m_closestHitFraction;
 	[Const] attribute btCollisionObject m_collisionObject;
 };
 
@@ -245,14 +247,17 @@ interface ClosestConvexResultCallback {
 	[Value] attribute btVector3 m_convexToWorld;
 	[Value] attribute btVector3 m_hitNormalWorld;
 	[Value] attribute btVector3 m_hitPointWorld;
+	[Const] attribute btCollisionObject m_hitCollisionObject;
 };
 ClosestConvexResultCallback implements ConvexResultCallback;
 
 interface btCollisionShape {
 	void setLocalScaling([Const, Ref] btVector3 scaling);
+	[Ref] btVector3 getLocalScaling();
 	void calculateLocalInertia(float mass, [Ref] btVector3 inertia);
 	void setMargin(float margin);
 	float getMargin();
+	void getAabb([Ref] btTransform t, [Ref] btVector3 aabbMin, [Ref] btVector3 aabbMax);
 };
 
 interface btConvexShape {
@@ -416,7 +421,7 @@ interface btPersistentManifold {
 
 interface btDispatcher {
 	long getNumManifolds();
-	btPersistentManifold getManifoldByIndexInternal(long index);
+	[Const] btPersistentManifold getManifoldByIndexInternal(long index);
 };
 
 interface btCollisionDispatcher {
@@ -493,9 +498,9 @@ interface btRigidBody {
 	btMotionState getMotionState();
 	void setMotionState(btMotionState motionState);
 	void setAngularFactor([Const, Ref] btVector3 angularFactor);
-	void setGravity([Const, Ref] btVector3 gravity);
 	btRigidBody upcast([Const] btCollisionObject colObj);
 	void getAabb([Ref] btVector3 aabbMin, [Ref] btVector3 aabbMax);
+	void setGravity([Const,Ref] btVector3 gravity);
 };
 btRigidBody implements btCollisionObject;
 
@@ -625,16 +630,35 @@ interface btDispatcherInfo {
 	attribute float m_convexConservativeDistanceThreshold;
 };
 
+interface btIDebugDraw {
+	void drawLine([Const, Ref] btVector3 from, [Const, Ref] btVector3 to, [Const, Ref] btVector3 color);
+};
+
+interface HlDebugDrawer {
+  void HlDebugDrawer();
+  void clear();
+  [Const] long getLineCount();
+  [Const] VoidPtr getLinesPtr();
+  long copyLines(VoidPtr outFloatBuffer, long maxFloats);
+  void setDebugMode(long mode);
+  [Const] long getDebugMode();
+};
+HlDebugDrawer implements btIDebugDraw;
+
+
 interface btCollisionWorld {
 	btDispatcher getDispatcher();
 	void rayTest([Const, Ref] btVector3 rayFromWorld, [Const, Ref] btVector3 rayToWorld, [Ref] RayResultCallback resultCallback);
 	btOverlappingPairCache getPairCache();
 	[Ref] btDispatcherInfo getDispatchInfo();
 	void addCollisionObject(btCollisionObject collisionObject, optional short collisionFilterGroup, optional short collisionFilterMask);
+	void removeCollisionObject(btCollisionObject collisionObject);
 	[Const] btBroadphaseInterface getBroadphase();
 	void convexSweepTest([Const] btConvexShape castShape, [Const, Ref] btTransform from, [Const, Ref] btTransform to, [Ref] ConvexResultCallback resultCallback, float allowedCcdPenetration);
 	void contactPairTest([Const] btCollisionObject colObjA, [Const] btCollisionObject colObjB, [Ref] ContactResultCallback resultCallback);
 	void contactTest([Const] btCollisionObject colObj, [Ref] ContactResultCallback resultCallback);
+	void setDebugDrawer(btIDebugDraw debugDrawer);
+	void debugDrawWorld();
 };
 
 interface btContactSolverInfo {

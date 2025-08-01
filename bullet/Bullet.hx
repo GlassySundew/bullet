@@ -18,7 +18,7 @@ class Bullet {
     }
 
 #if eval
-	static var INCLUDE = "
+	static var INCLUDE = '
 #ifdef _WIN32
 #pragma warning(disable:4305)
 #pragma warning(disable:4244)
@@ -33,8 +33,8 @@ class Bullet {
 #include <BulletCollision/CollisionShapes/btHeightfieldTerrainShape.h>
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
 #include <BulletDynamics/Character/btKinematicCharacterController.h>
-
-";
+#include "hl_debug_drawer.h"
+';
     public static function buildLibCpp() {
         config.includeCode = INCLUDE;
 		webidl.Generate.generateCpp(config);
