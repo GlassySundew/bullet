@@ -37,11 +37,12 @@ class World {
 	var fromPoint = new Bullet.Vector3();
 	var toPoint = new Bullet.Vector3();
 	// Returns a body if the ray hits something. the to param will be set to where it was hit
-	public function rayTest(from : h3d.col.Point, to : h3d.col.Point, mask : UInt16 = -1, ?hitNormal : h3d.col.Point) : Body {
+	public function rayTest(from : h3d.col.Point, to : h3d.col.Point, group : UInt16 = -1, mask : UInt16 = -1, ?hitNormal : h3d.col.Point) : Body {
 		fromPoint.setValue(from.x, from.y, from.z);
 		toPoint.setValue(to.x, to.y, to.z);
 		var res = new Bullet.ClosestRayResultCallback(fromPoint, toPoint);
 		res.m_collisionFilterMask = mask;
+		res.m_collisionFilterGroup = group;
 		inst.rayTest(fromPoint, toPoint, res);
 		to.set(res.m_hitPointWorld.x(), res.m_hitPointWorld.y(), res.m_hitPointWorld.z());
 		var hit = res.hasHit();
@@ -63,10 +64,13 @@ class World {
 
 		return null;
 	}
-
 	
 	public function setDebugDrawer(debugDraw : Bullet.IDebugDraw) {
 		inst.setDebugDrawer(debugDraw);
+	}
+
+	public function getDebugDrawer() : Bullet.IDebugDraw {
+		return inst.getDebugDrawer();
 	}
 
 	public function setGravity( x : Float, y : Float, z : Float ) {
@@ -81,11 +85,7 @@ class World {
 		return dispatch.getNumManifolds();
 	}
 
-	public function sync() {
-		for( b in bodies )
-			if( b.object != null )
-				b.sync();
-	}
+	public function sync() {}
 
 	function clearBodyMovement( b : Body ) {
 		pcache.cleanProxyFromPairs(@:privateAccess b.inst.getBroadphaseHandle(),dispatch);
@@ -93,24 +93,18 @@ class World {
 
 	function addRigidBody( b : Body, group : UInt16 = -1, mask : UInt16 = -1 ) {
 		if( b.world != null ) throw "Body already in world";
-		bodies.push(b);
+		bodies[b.id] = b;
 		@:privateAccess b.world = this;
 		inst.addRigidBody(@:privateAccess b.inst, group, mask);
 		if( b.object != null && parent != null && b.object.parent == null ) parent.addChild(b.object);
 	}
 
 	public function getRigidBodyById(id : Body.BodyId) : Body {
-		for (b in bodies) {
-			if (b.id == id) {
-				return b;
-			}
-		}
-
-		return null;
+		return bodies[id];
 	}
 
 	function removeRigidBody( b : Body ) {
-		if( !bodies.remove(b) ) return;
+		if( bodies[b.id] == null ) return;
 		@:privateAccess b.world = null;
 		inst.removeRigidBody(@:privateAccess b.inst);
 		if( b.object != null && b.object.parent == parent ) b.object.remove();
