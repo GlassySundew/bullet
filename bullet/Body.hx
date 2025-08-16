@@ -272,7 +272,7 @@ class Body {
 		p.delete();
 	}
 
-	public function setGravity( x, y, z ) {
+	public function setGravity( x : Float, y : Float, z : Float ) {
 		var p = new Bullet.Vector3( x, y, z );
 		inst.setGravity( p );
 		p.delete();
