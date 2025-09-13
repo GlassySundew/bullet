@@ -446,6 +446,9 @@ interface btBroadphaseInterface {
 };
 
 interface btBroadphaseProxy {
+
+	attribute int m_collisionFilterGroup;
+	attribute int m_collisionFilterMask;
 };
 
 interface btCollisionConfiguration {
@@ -853,6 +856,7 @@ btPairCachingGhostObject implements btGhostObject;
 interface btGhostPairCallback {
 	void btGhostPairCallback();
 };
+btGhostPairCallback implements btOverlappingPairCallback;
 
 
 // soft bodies
