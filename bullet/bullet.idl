@@ -212,7 +212,36 @@ interface btManifoldPoint {
 [Prefix="btCollisionWorld::"]
 interface ContactResultCallback {
 	float addSingleResult([Ref] btManifoldPoint cp, [Const] btCollisionObjectWrapper colObj0Wrap, long partId0, long index0, [Const] btCollisionObjectWrapper colObj1Wrap, long partId1, long index1);
+	attribute long m_collisionFilterGroup;
+	attribute long m_collisionFilterMask;
 };
+
+//interface AnyHitCallback {
+//  void AnyHitCallback();
+//  [Const] boolean getAnyHit();
+//};
+//AnyHitCallback implements ContactResultCallback;
+
+interface HlContact {
+	attribute float px;
+	attribute float py;
+	attribute float pz;
+	attribute float nx;
+	attribute float ny;
+	attribute float nz;
+	attribute float distance;
+
+	[Const, Ref] attribute btCollisionObject other;
+};
+
+interface CollectContacts {
+	void CollectContacts();
+	void clear();
+	void setSelf(btCollisionObject self); 
+	[Const] long uniqueCount();
+	[Const] btCollisionObject getUniqueOther(long index);
+};
+CollectContacts implements ContactResultCallback;
 
 [Prefix="btCollisionWorld::"]
 interface LocalShapeInfo {
@@ -663,6 +692,8 @@ interface btCollisionWorld {
 	void setDebugDrawer(btIDebugDraw debugDrawer);
 	[Const] btIDebugDraw getDebugDrawer();
 	void debugDrawWorld();
+	void performDiscreteCollisionDetection();
+	void updateSingleAabb(btCollisionObject colObj);
 };
 
 interface btContactSolverInfo {
@@ -843,8 +874,8 @@ btRaycastVehicle implements btActionInterface;
 
 interface btGhostObject {
 	void btGhostObject();
-	long getNumOverlappingObjects();
-	btCollisionObject getOverlappingObject(long index);
+	[Const] long getNumOverlappingObjects();
+	[Const] btCollisionObject getOverlappingObject(long index);
 };
 btGhostObject implements btCollisionObject;
 

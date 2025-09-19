@@ -34,6 +34,7 @@ class Bullet {
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
 #include <BulletDynamics/Character/btKinematicCharacterController.h>
 #include "hl_debug_drawer.h"
+#include "hl_contact_callbacks.h"
 ';
     public static function buildLibCpp() {
         config.includeCode = INCLUDE;

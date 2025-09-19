@@ -493,4 +493,9 @@
       <UniqueIdentifier>{CEB624F9-AE60-3E3B-BFE9-080A5FDE6474}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\hl_contact_callbacks.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>
