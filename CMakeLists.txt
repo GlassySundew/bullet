@@ -17,16 +17,10 @@ include(GNUInstallDirs)
 set(HDLL_DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
 set(BULLET_DIR lib/bullet3)
-set(HASHLINK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../hashlink)
+set(HASHLINK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../..)
 
 include_directories(${BULLET_SRC_DIR})
 include_directories(${HASHLINK_DIR}/src)
-
-if (NOT WIN32)
-link_directories(${HASHLINK_DIR})
-link_directories(/usr/local/lib)
-endif()
-
 
 set(BULLET_SRC_DIR ${BULLET_DIR}/src)
 set(BULLET_SOURCES
@@ -209,9 +203,18 @@ target_link_libraries(bullet.hdll
     libhl
 )
 else()
-target_link_libraries(bullet.hdll
-    hl
-)
+    string(REPLACE ":" ";" HASHLINK_LIBRARY_PATHS "$ENV{LD_LIBRARY_PATH}")
+    find_library(HASHLINK_LIBRARY NAMES hl
+        HINTS
+            ${HASHLINK_LIBRARY_PATHS}
+            "${HASHLINK_DIR}/linux_bin"
+            "${HASHLINK_DIR}/bin"
+            "${HASHLINK_DIR}"
+    )
+    if(NOT HASHLINK_LIBRARY)
+        message(FATAL_ERROR "Could not find libhl. Build HashLink first or set HASHLINK_LIBRARY to its library path.")
+    endif()
+    target_link_libraries(bullet.hdll PRIVATE "${HASHLINK_LIBRARY}")
 endif()
 
 target_include_directories(bullet.hdll

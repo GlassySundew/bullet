@@ -382,7 +382,7 @@ interface btCompoundShape {
 	void addChildShape([Const, Ref] btTransform localTransform, btCollisionShape shape);
 	void removeChildShapeByIndex(long childShapeindex);
 	[Const] long getNumChildShapes();
-	btCollisionShape getChildShape(long index);
+	[Const] btCollisionShape getChildShape(long index);
 	void setMargin(float margin);
 	float getMargin();
 };
@@ -471,7 +471,7 @@ interface btAxisSweep3 {
 };
 
 interface btBroadphaseInterface {
-	btOverlappingPairCache getOverlappingPairCache();
+	[Const] btOverlappingPairCache getOverlappingPairCache();
 };
 
 interface btBroadphaseProxy {
@@ -527,10 +527,10 @@ interface btRigidBody {
 	[Const, Ref] btVector3 getAngularVelocity();
 	void setLinearVelocity([Const, Ref] btVector3 lin_vel);
 	void setAngularVelocity([Const, Ref] btVector3 ang_vel);
-	btMotionState getMotionState();
+	[Const] btMotionState getMotionState();
 	void setMotionState(btMotionState motionState);
 	void setAngularFactor([Const, Ref] btVector3 angularFactor);
-	btRigidBody upcast([Const] btCollisionObject colObj);
+	[Const] btRigidBody upcast([Const] btCollisionObject colObj);
 	void getAabb([Ref] btVector3 aabbMin, [Ref] btVector3 aabbMax);
 	void setGravity([Const,Ref] btVector3 gravity);
 };
@@ -679,9 +679,9 @@ HlDebugDrawer implements btIDebugDraw;
 
 
 interface btCollisionWorld {
-	btDispatcher getDispatcher();
+	[Const] btDispatcher getDispatcher();
 	void rayTest([Const, Ref] btVector3 rayFromWorld, [Const, Ref] btVector3 rayToWorld, [Ref] RayResultCallback resultCallback);
-	btOverlappingPairCache getPairCache();
+	[Const] btOverlappingPairCache getPairCache();
 	[Ref] btDispatcherInfo getDispatchInfo();
 	void addCollisionObject(btCollisionObject collisionObject, optional short collisionFilterGroup, optional short collisionFilterMask);
 	void removeCollisionObject(btCollisionObject collisionObject);
@@ -833,7 +833,7 @@ interface btKinematicCharacterController {
 	[Value] btVector3 getGravity();
 	void setMaxSlope(float slopeRadians);
 	float getMaxSlope();
-	btPairCachingGhostObject getGhostObject();
+	[Const] btPairCachingGhostObject getGhostObject();
 	void setUseGhostSweepTest(boolean useGhostObjectSweepTest);
 	boolean onGround();
 };
@@ -847,7 +847,7 @@ interface btRaycastVehicle {
 	void updateWheelTransform(long wheelIndex, boolean interpolatedTransform);
 	[Ref] btWheelInfo addWheel([Const, Ref] btVector3 connectionPointCS0, [Const, Ref] btVector3 wheelDirectionCS0, [Const, Ref] btVector3 wheelAxleCS, float suspensionRestLength, float wheelRadius, [Const, Ref] btVehicleTuning tuning, boolean isFrontWheel);
 	long getNumWheels();
-	btRigidBody getRigidBody();
+	[Const] btRigidBody getRigidBody();
 	[Ref] btWheelInfo getWheelInfo(long index);
 	void setBrake(float brake, long wheelIndex);
 	void setCoordinateSystem(long rightIndex, long upIndex, long forwardIndex);
@@ -982,7 +982,7 @@ interface btSoftBody {
 	void rotate( [Const, Ref] btQuaternion rot);
 	void scale(	[Const, Ref] btVector3 scl);
 	long generateClusters(long k, optional long maxiterations);
-	btSoftBody upcast([Const] btCollisionObject colObj);
+	[Const] btSoftBody upcast([Const] btCollisionObject colObj);
 };
 btSoftBody implements btCollisionObject;
 
